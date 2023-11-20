@@ -1,23 +1,35 @@
-import logo from './logo.svg';
-import './App.css';
+import Header from "./Header";
+
+import Content from "./Content";
+import Footer from "./Footer";
+import { useState } from "react";
+import AddItem from "./AddItem";
+import SearchItem from "./SearchItem";
 
 function App() {
+  const [items, setItems] = useState(
+    localStorage.getItem("checklist")
+      ? JSON.parse(localStorage.getItem("checklist"))
+      : []
+  );
+
+  const [newItem, setNewItem] = useState("");
+  const [search, setSearch] = useState("");
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <Header title="체크 리스트" length={items.length} />
+      <AddItem
+        newItem={newItem}
+        setNewItem={setNewItem}
+        items={items}
+        setItems={setItems}
+      />
+      <SearchItem search={search} setSearch={setSearch} />
+      <Content
+        items={items.filter((item) => item.item.includes(search))}
+        setItems={setItems}
+      />
+      <Footer />
     </div>
   );
 }
